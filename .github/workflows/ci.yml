@@ -150,6 +150,8 @@ jobs:
           # See https://github.com/open-telemetry/community/blob/main/docs/using-actuated.md
           - os: actuated-arm64-2cpu-8gb
             arch: arm64
+          - os: riscv-builders
+            arch: riscv64
     runs-on: ${{ matrix.platform.os }}
     steps:
       - name: Checkout code
