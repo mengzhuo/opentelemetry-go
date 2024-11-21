@@ -158,7 +158,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run on architecture (RISCV64 Alpine)
-        uses: ExoSkye/run-on-arch-action@v2.1.4
+        uses: ExoSkye/run-on-arch-action@v2.8.1
         with:
           arch: riscv64
           distro: ubuntu22.04
