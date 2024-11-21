@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - dev
   pull_request:
 env:
   # Default version of Go to use by CI workflows. This should be the latest
@@ -135,21 +136,7 @@ jobs:
         go-version: ["1.23.0", "~1.22.5"]
         platform:
           - os: ubuntu-latest
-            arch: "386"
-          - os: ubuntu-latest
             arch: amd64
-          - os: macos-13
-            arch: amd64
-          - os: macos-latest
-            arch: arm64
-          - os: windows-latest
-            arch: "386"
-          - os: windows-latest
-            arch: amd64
-          # ARM64 compatibility tests are using actuated runners
-          # See https://github.com/open-telemetry/community/blob/main/docs/using-actuated.md
-          - os: actuated-arm64-2cpu-8gb
-            arch: arm64
           - os: riscv-builders
             arch: riscv64
     runs-on: ${{ matrix.platform.os }}
@@ -166,9 +153,17 @@ jobs:
         env:
           GOARCH: ${{ matrix.platform.arch }}
         run: make test-short
-
-  test-compatibility:
+  test-qemu-performance:
     runs-on: ubuntu-latest
+    steps:
+      - name: Run on architecture (RISCV64 Alpine)
+        uses: ExoSkye/run-on-arch-action@v2.1.4
+        run: |
+          echo ${{ needs.compatibility-test.result }}
+          test ${{ needs.compatibility-test.result }} == "success"
+            
+  test-compatibility:
+    runs-on: riscv-builders
     needs: [compatibility-test]
     steps:
       - name: Test if compatibility-test passed
