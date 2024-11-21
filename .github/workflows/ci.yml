@@ -153,14 +153,18 @@ jobs:
         env:
           GOARCH: ${{ matrix.platform.arch }}
         run: make test-short
+
   test-qemu-performance:
     runs-on: ubuntu-latest
     steps:
       - name: Run on architecture (RISCV64 Alpine)
         uses: ExoSkye/run-on-arch-action@v2.1.4
-        run: |
-          echo ${{ needs.compatibility-test.result }}
-          test ${{ needs.compatibility-test.result }} == "success"
+        with:
+          arch: riscv64
+          distro: ubuntu
+          run: |
+            echo ${{ needs.compatibility-test.result }}
+            test ${{ needs.compatibility-test.result }} == "success"
             
   test-compatibility:
     runs-on: riscv-builders
