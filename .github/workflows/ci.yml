@@ -161,7 +161,7 @@ jobs:
         uses: ExoSkye/run-on-arch-action@v2.1.4
         with:
           arch: riscv64
-          distro: ubuntu
+          distro: ubuntu22.04
           run: |
             echo ${{ needs.compatibility-test.result }}
             test ${{ needs.compatibility-test.result }} == "success"
